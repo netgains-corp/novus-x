@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVUSX | The Future of DeFi</title>
+    <title>NOVUS X | The Future of DeFi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
     
+    <!-- LENIS SMOOTH SCROLL CSS (Empfohlen für beste Performance) -->
+    <style>
+        html.lenis, html.lenis body { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+    </style>
+
     <style>
         :root {
+            /* Raydium / Cyberpunk Farben */
             --primary: #00d2ff;
-            --glass-bg: rgba(18, 18, 24, 0.4); 
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --secondary: #3a7bd5;
+            --accent: #9600ff;
+            --glass-bg: rgba(18, 18, 24, 0.45); 
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-highlight: rgba(255, 255, 255, 0.2);
             --text-main: #ffffff;
             --text-muted: #8f9bb3;
         }
@@ -31,93 +44,104 @@
             min-height: 100vh;
         }
 
-        /* --- FIX 1: LOGO ENTFERNEN (ZOOM TRICK) --- */
+        /* --- SPLINE HINTERGRUND --- */
         .iframe-container {
             position: fixed;
-            top: -5%;      /* Schiebt es 5% nach oben */
-            left: -5%;     /* Schiebt es 5% nach links */
-            width: 110%;   /* Macht es 10% breiter als den Screen */
-            height: 110%;  /* Macht es 10% höher als den Screen */
-            z-index: 0;    /* Ganz unten */
+            top: -5%;      
+            left: -5%;     
+            width: 110%;   
+            height: 110%;  
+            z-index: 0;    
         }
 
         iframe {
             width: 100%;
             height: 100%;
             border: none;
-            /* Interaktivität für den Hintergrund aktivieren */
-            pointer-events: auto; 
+            pointer-events: auto; /* Muss auto sein, damit Spline reagiert */
         }
 
-        /* --- FIX 2: INTERAKTIVITÄT DURCHLASSEN --- */
-        /* Alles, was über dem Hintergrund liegt, darf Mausklicks nicht blockieren */
-        nav, .hero-section {
+        /* --- INTERAKTIVITÄTS-LOGIK --- */
+        nav, .hero-section, .grid-section, footer {
             position: relative;
             z-index: 10;
-            pointer-events: none; /* WICHTIG: Klicks gehen durch leere Bereiche durch! */
+            pointer-events: none; 
         }
 
-        /* Aber die Buttons und Texte müssen wieder klickbar sein */
-        .logo, .nav-links a, .glass-panel, .btn, .contract-box {
-            pointer-events: auto; 
+        .glass-panel, .card {
+            pointer-events: none; 
         }
 
-        /* NAVIGATION STYLING */
+        .logo, 
+        .nav-links a, 
+        .btn, 
+        .contract-box,
+        .card-icon { 
+             pointer-events: auto; 
+        }
+
+        /* --- NAVIGATION --- */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 5%;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
             position: fixed;
             width: 100%;
             top: 0;
             border-bottom: 1px solid var(--glass-border);
-            background: rgba(8, 8, 15, 0.2);
+            background: rgba(8, 8, 15, 0.3);
         }
 
         .logo {
-            font-weight: 900;
+            font-weight: 700;
             font-size: 1.5rem;
             background: linear-gradient(90deg, #fff, #00d2ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             cursor: pointer;
+            /* Leichter Drop Shadow für das Logo */
+            filter: drop-shadow(0 2px 10px rgba(0, 210, 255, 0.3));
         }
 
         .nav-links a {
             text-decoration: none;
             color: var(--text-muted);
-            font-weight: 500;
+            font-weight: 300; 
             margin-left: 30px;
-            font-size: 0.9rem;
+            font-size: 0.95rem; 
             transition: 0.3s;
+            letter-spacing: 0.5px;
+            /* Ganz leichter Schatten für Links */
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
-        .nav-links a:hover { color: #fff; }
+        .nav-links a:hover { color: #fff; text-shadow: 0 0 10px rgba(0, 210, 255, 0.5); }
 
-        /* HERO SECTION */
+        /* --- HERO SECTION --- */
         .hero-section {
-            min-height: 100vh;
+            min-height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 20px;
+            padding: 100px 20px 40px 20px;
         }
 
         .glass-panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
             padding: 50px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
             max-width: 900px;
             width: 100%;
+            margin-bottom: 40px;
         }
 
         h1 {
@@ -125,22 +149,80 @@
             font-weight: 900;
             margin-bottom: 20px;
             letter-spacing: -2px;
+            line-height: 1.1;
+            /* NEU: Kräftiger Drop Shadow für die Headline */
+            text-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
         }
 
         .gradient-text {
             background: linear-gradient(to right, #00c6fb, #005bea, #9600ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: shine 5s linear infinite;
+            background-size: 200%;
+            /* Text-Shadow funktioniert nicht gut mit bg-clip:text, daher nutzen wir filter drop-shadow */
+            filter: drop-shadow(0 5px 15px rgba(0, 198, 251, 0.4));
         }
+
+        @keyframes shine { to { background-position: 200%; } }
 
         p {
             font-size: 1.2rem;
             color: var(--text-muted);
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             line-height: 1.6;
         }
 
-        /* BUTTONS */
+        /* --- GRID SECTION --- */
+        .grid-section {
+            padding: 20px 5%;
+            padding-bottom: 100px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(18, 18, 24, 0.6); 
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            /* Icon Schatten */
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+            /* NEU: Leichter Drop Shadow für Kartentitel */
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+            color: var(--text-muted);
+        }
+
+        /* --- BUTTONS --- */
         .btn {
             padding: 14px 32px;
             border-radius: 12px;
@@ -149,67 +231,168 @@
             margin: 0 10px;
             display: inline-block;
             cursor: pointer;
+            transition: 0.2s;
+            pointer-events: auto; 
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
             color: #fff;
             box-shadow: 0 0 20px rgba(0, 198, 251, 0.4);
+            border: none;
+            /* Text Schatten für Button Text */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+        
+        .btn-primary:hover { box-shadow: 0 0 30px rgba(0, 198, 251, 0.7); transform: scale(1.02); }
 
         .btn-glass {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.2);
             color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
+        
+        .btn-glass:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
 
-        /* CONTRACT ADRESSE */
+        /* --- CONTRACT BOX --- */
         .contract-box {
-            margin-top: 40px;
-            background: rgba(0,0,0,0.6);
-            padding: 15px 25px;
+            margin-top: 30px;
+            background: rgba(0,0,0,0.5);
+            padding: 12px 20px;
             border-radius: 50px;
             border: 1px solid var(--glass-border);
             display: inline-flex;
             align-items: center;
             gap: 15px;
             cursor: pointer;
+            transition: 0.2s;
+            pointer-events: auto; 
         }
-        
-        .addr-text { font-family: monospace; color: var(--text-muted); }
+        .contract-box:hover { border-color: var(--primary); }
+        .contract-box:active { transform: scale(0.98); }
+        .addr-text { font-family: monospace; color: var(--text-muted); font-size: 0.9rem; }
 
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .card-grid { grid-template-columns: 1fr; }
+            .hero-section { padding-top: 120px; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- SPLINE HINTERGRUND -->
     <div class="iframe-container">
         <iframe src="https://my.spline.design/animatedbackgroundgradientforweb-B1OrqfJoWHK5OBqK7FNovxVf/"></iframe>
     </div>
 
+    <!-- NAVIGATION -->
     <nav>
-        <div class="logo">NOVUSX</div>
+        <div class="logo">NOVUS X</div>
         <div class="nav-links">
             <a href="https://dexscreener.com" target="_blank">Chart</a>
-            <a href="https://app.uniswap.org" target="_blank">Buy Now</a>
+            <a href="#tokenomics">Tokenomics</a>
+            <a href="#roadmap">Roadmap</a>
+            <a href="https://app.uniswap.org" target="_blank" class="btn btn-primary" style="margin-left: 20px; padding: 8px 20px;">Buy Now</a>
         </div>
     </nav>
 
+    <!-- HERO SECTION -->
     <section class="hero-section">
         <div class="glass-panel">
             <h1>The Future is <br><span class="gradient-text">Here.</span></h1>
-            <p>NOVUSX is built for the community. Safe, burnable, and ready to scale.</p>
+            <p>NOVUS X is built for the community. Safe, burnable, and ready to scale on the Ethereum Network.</p>
             
             <div>
                 <a href="https://app.uniswap.org" target="_blank" class="btn btn-primary">Buy on Uniswap</a>
                 <a href="https://dexscreener.com" target="_blank" class="btn btn-glass">Live Chart ↗</a>
             </div>
 
-            <div class="contract-box" onclick="navigator.clipboard.writeText('0x9cdb25BE428ED7C22Dcc1C10CA40726463AdcD63')">
+            <div class="contract-box" onclick="copyToClipboard('0x9cdb25BE428ED7C22Dcc1C10CA40726463AdcD63')">
                 <span class="addr-text">0x9cdb...AdcD63</span>
                 <span>📋</span>
             </div>
+            <div id="copy-msg" style="margin-top: 10px; color: var(--primary); opacity: 0; transition: 0.3s; font-size: 0.8rem;">Address Copied!</div>
         </div>
     </section>
+
+    <!-- CARD GRID SECTION -->
+    <section class="grid-section">
+        <div class="card-grid">
+            
+            <!-- Karte 1: Tokenomics -->
+            <div class="card" id="tokenomics">
+                <span class="card-icon">🔥</span>
+                <h3>Deflationary</h3>
+                <p>NOVUS X features a built-in burn mechanism. Every transaction contributes to reducing the supply, increasing scarcity and value over time.</p>
+            </div>
+
+            <!-- Karte 2: Security -->
+            <div class="card">
+                <span class="card-icon">🛡️</span>
+                <h3>Unruggable</h3>
+                <p>Liquidity is locked and ownership is managed via a secure AccessControl standard. The contract is fully verified on Etherscan.</p>
+            </div>
+
+            <!-- Karte 3: Community -->
+            <div class="card">
+                <span class="card-icon">💎</span>
+                <h3>Community First</h3>
+                <p>No private presales for VCs. A fair launch for everyone. The liquidity pool was funded 100% by the team to ensure a safe start.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 NOVUS X Protocol. All rights reserved.</p>
+    </footer>
+
+    <!-- LENIS SCRIPT IMPORT -->
+    <script src="https://unpkg.com/lenis@1.0.45/dist/lenis.min.js"></script>
+    
+    <script>
+        // 1. Copy Function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const msg = document.getElementById('copy-msg');
+                msg.style.opacity = '1';
+                setTimeout(() => msg.style.opacity = '0', 2000);
+            });
+        }
+
+        // 2. Lenis Smooth Scroll Setup
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+    </script>
 
 </body>
 </html>
