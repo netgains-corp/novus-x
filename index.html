@@ -31,19 +31,38 @@
             min-height: 100vh;
         }
 
-        /* HIER IST DEIN HINTERGRUND (IFRAME) */
-        #spline-bg {
+        /* --- FIX 1: LOGO ENTFERNEN (ZOOM TRICK) --- */
+        .iframe-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1; /* Schiebt es ganz nach hinten */
-            border: none;
-            pointer-events: none; /* Wichtig: Damit man auf der Website scrollen/klicken kann */
+            top: -5%;      /* Schiebt es 5% nach oben */
+            left: -5%;     /* Schiebt es 5% nach links */
+            width: 110%;   /* Macht es 10% breiter als den Screen */
+            height: 110%;  /* Macht es 10% höher als den Screen */
+            z-index: 0;    /* Ganz unten */
         }
 
-        /* NAVIGATION */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            /* Interaktivität für den Hintergrund aktivieren */
+            pointer-events: auto; 
+        }
+
+        /* --- FIX 2: INTERAKTIVITÄT DURCHLASSEN --- */
+        /* Alles, was über dem Hintergrund liegt, darf Mausklicks nicht blockieren */
+        nav, .hero-section {
+            position: relative;
+            z-index: 10;
+            pointer-events: none; /* WICHTIG: Klicks gehen durch leere Bereiche durch! */
+        }
+
+        /* Aber die Buttons und Texte müssen wieder klickbar sein */
+        .logo, .nav-links a, .glass-panel, .btn, .contract-box {
+            pointer-events: auto; 
+        }
+
+        /* NAVIGATION STYLING */
         nav {
             display: flex;
             justify-content: space-between;
@@ -53,7 +72,6 @@
             position: fixed;
             width: 100%;
             top: 0;
-            z-index: 100;
             border-bottom: 1px solid var(--glass-border);
             background: rgba(8, 8, 15, 0.2);
         }
@@ -65,6 +83,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
+            cursor: pointer;
         }
 
         .nav-links a {
@@ -79,7 +98,7 @@
         .nav-links a:hover { color: #fff; }
 
         /* HERO SECTION */
-        .hero {
+        .hero-section {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -129,6 +148,7 @@
             text-decoration: none;
             margin: 0 10px;
             display: inline-block;
+            cursor: pointer;
         }
 
         .btn-primary {
@@ -162,7 +182,9 @@
 </head>
 <body>
 
-    <iframe id="spline-bg" src="https://my.spline.design/animatedbackgroundgradientforweb-B1OrqfJoWHK5OBqK7FNovxVf/"></iframe>
+    <div class="iframe-container">
+        <iframe src="https://my.spline.design/animatedbackgroundgradientforweb-B1OrqfJoWHK5OBqK7FNovxVf/"></iframe>
+    </div>
 
     <nav>
         <div class="logo">NOVUSX</div>
@@ -172,7 +194,7 @@
         </div>
     </nav>
 
-    <section class="hero">
+    <section class="hero-section">
         <div class="glass-panel">
             <h1>The Future is <br><span class="gradient-text">Here.</span></h1>
             <p>NOVUSX is built for the community. Safe, burnable, and ready to scale.</p>
