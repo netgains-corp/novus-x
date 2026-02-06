@@ -44,6 +44,23 @@
             overflow-x: hidden;
             min-height: 100vh;
             overscroll-behavior-y: auto; 
+            transition: background 0.8s ease; 
+        }
+
+        /* --- THEME 2: STATIC GRADIENT MODE (Deep Purple Shimmer) --- */
+        body.static-mode {
+            background-color: #000000;
+            /* UPDATE: Komplexer Multi-Layer Gradient für "Schimmer"-Effekt */
+            background-image: 
+                radial-gradient(circle at 50% 0%, #581c87 0%, transparent 60%), /* Haupt-Glow Oben: Saturiertes Lila */
+                radial-gradient(circle at 85% 30%, #3b0764 0%, transparent 50%), /* Rechts: Dunkles Deep Purple */
+                radial-gradient(circle at 0% 50%, #1e1b4b 0%, transparent 50%);  /* Links: Dunkles Indigo/Schwarz */
+            background-attachment: fixed; /* Hält den Effekt beim Scrollen fest */
+        }
+        
+        body.static-mode .iframe-container {
+            opacity: 0; 
+            pointer-events: none;
         }
 
         /* --- SPLINE HINTERGRUND --- */
@@ -54,6 +71,7 @@
             width: 110%;   
             height: 110%;  
             z-index: 0;    
+            transition: opacity 0.5s ease; 
         }
 
         iframe {
@@ -80,7 +98,8 @@
         .contract-box,
         .check-list li,
         .transparency-link,
-        .logo-item { 
+        .logo-item,
+        #theme-toggle { /* Button muss klickbar sein */
              pointer-events: auto; 
         }
 
@@ -109,6 +128,11 @@
             filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.8)) drop-shadow(0 0 20px rgba(0, 210, 255, 0.4));
         }
 
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
         .nav-links a {
             text-decoration: none;
             color: var(--text-muted);
@@ -121,6 +145,30 @@
         }
 
         .nav-links a:hover { color: #fff; text-shadow: 0 0 10px rgba(0, 210, 255, 0.5); }
+
+        /* THEME TOGGLE BUTTON */
+        #theme-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            font-size: 1.2rem;
+        }
+
+        #theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+        }
 
         /* --- HERO SECTION --- */
         .hero-section {
@@ -147,7 +195,7 @@
         }
 
         h1 {
-            font-size: 4rem; /* Zurück zur großen Größe */
+            font-size: 4rem; 
             font-weight: 900;
             margin-bottom: 20px;
             letter-spacing: -2px;
@@ -228,7 +276,6 @@
             stroke: var(--primary); /* Neon Farbe */
             stroke-width: 1.5;
             fill: none;
-            /* Cooler Neon Drop Shadow für die Icons */
             filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.6));
             transition: 0.3s;
         }
@@ -449,6 +496,16 @@
             <a href="#why">Why Us</a>
             <a href="#transparency">Transparency</a>
             <a href="https://app.uniswap.org" target="_blank" class="btn btn-primary" style="margin-left: 20px; padding: 8px 20px;">Buy Now</a>
+            
+            <!-- THEME TOGGLE BUTTON -->
+            <button id="theme-toggle" onclick="toggleTheme()" title="Toggle Background">
+                <!-- Simple SVG Icon for Layers/Theme -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+            </button>
         </div>
     </nav>
 
@@ -609,7 +666,12 @@
             });
         }
 
-        // 2. Lenis Smooth Scroll Setup
+        // 2. Theme Toggle Function
+        function toggleTheme() {
+            document.body.classList.toggle('static-mode');
+        }
+
+        // 3. Lenis Smooth Scroll Setup
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
